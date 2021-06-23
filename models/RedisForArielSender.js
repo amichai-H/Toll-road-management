@@ -4,7 +4,7 @@ var server = require('http').Server(app);
 var redis = require('redis');
 var redisClient = redis.createClient();
 
-// for explanations : https://www.sitepoint.com/using-redis-node-js/
+// for explanations : n
 
 app.get('/test', function (req, res) {
 
@@ -37,7 +37,7 @@ client.lrange('frameworks', 0, -1, function(err, reply) {
     console.log(reply); // ['angularjs', 'backbone']
 }); */
 
-    redisClient.publish("message", "{\"message\":\"Hello from Redis\"}", function () {
+    redisClient.publish("message", "{\"message\":\"Hello from ben\"}", function () {
     });
 
     res.send('תקשרתי עם רדיס....')
