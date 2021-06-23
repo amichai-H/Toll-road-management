@@ -1,0 +1,28 @@
+{
+  "name": "toll-road-management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "run": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amichai-H/Toll-road-management.git"
+  },
+  "author": "Ben Itzhak, Amichai Hadad, Gal Bar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amichai-H/Toll-road-management/issues"
+  },
+  "homepage": "https://github.com/amichai-H/Toll-road-management#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "redis": "^3.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
