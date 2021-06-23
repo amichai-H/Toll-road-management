@@ -1,32 +1,40 @@
 const path = require('path');
+const http = require('http');
+
 
 const express = require('express');
-
-//const redis = require('./models/redis');
+const {client, fetchData, sendData } = require('./models/redisClient');
 
 const app = express();
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 const errorController = require('./controllers/error');
-// const shopRoutes = require('./routes/shop');
-// const authRoutes = require('./routes/auth');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-// app.use(shopRoutes);
-// app.use(authRoutes);
-
-app.get('/', (req, res) => {
+app.get('/dashboard', (req, res) => {
     res.render(path.join(__dirname, 'views/dashboard.ejs'));
+    sendData("new data");
+    fetchData();
 });
 
 // if got here return error 404
 //app.use(errorController.get404);
 
-app.listen(3003, function(err){
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+    });
+  });
+
+server.listen(3003, function(err){
     if (err) console.log("Error in server setup")
     console.log("Server listening on Port");
 })
