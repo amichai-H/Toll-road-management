@@ -22,6 +22,7 @@ class Vehicle:
         self.onRoad = False
         self.vehicleType = vehicleType
         self.roadParts = 0
+        self.color = 1;
         self.id = id
         ls = random.randint(1, 2)
         if ls == 1:
@@ -31,13 +32,14 @@ class Vehicle:
         self.countSection = 0
         id += 1
 
-    def gnerateData(self, eventT, day, time, specialDay):
+    def gnerateData(self, eventT, day, time, specialDay, color):
         return {"event": eventT,
                 "roadParts": self.roadParts,
                 "carType": self.vehicleType,
                 "day": day,
                 "time": time,
                 "Special": specialDay,
+                "color": color,
                 "id": self.id}
 
     def stayOnRoad(self, time, day, specialDay):
@@ -54,24 +56,24 @@ class Vehicle:
                     self.exitFromRoad(time, day, specialDay)
                     return
                 self.roadParts = self.roadParts + 1
-                newEvent = self.gnerateData(event[3], day, time, specialDay)
+                newEvent = self.gnerateData(event[3], day, time, specialDay, 1)
                 self.send(newEvent)  # send to server
             else:
                 if self.roadParts <= 1:
                     self.roadParts = 1
                     self.exitFromRoad(time, day, specialDay)
                     return
-                newEvent = self.gnerateData(event[3], day, time, specialDay)
+                newEvent = self.gnerateData(event[3], day, time, specialDay, 2)
                 self.send(newEvent)  # send to server
                 self.roadParts = self.roadParts - 1
 
-            newEvent = self.gnerateData(event[1], day, time, specialDay)
+            newEvent = self.gnerateData(event[1], day, time, specialDay, 3)
             self.send(newEvent)  # send to server
 
     def exitFromRoad(self, time, day, specialDay):
         if self.onRoad:
             self.countSection = 0
-            newEvent = self.gnerateData(event[2], day, time, specialDay)
+            newEvent = self.gnerateData(event[2], day, time, specialDay, 4)
             self.onRoad = False
             self.send(newEvent)  # send to server
 
@@ -80,7 +82,7 @@ class Vehicle:
             self.countSection = 1
             self.roadParts = random.randint(1, 5)
             self.onRoad = True
-            newEvent = self.gnerateData(event[0], day, time, specialDay)
+            newEvent = self.gnerateData(event[0], day, time, specialDay, 5)
             self.send(newEvent)  # send to server
 
     def geberateEvent(self, number, time, day, specialDay):

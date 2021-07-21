@@ -34,6 +34,21 @@
   <link href="../css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../demo/demo.css" rel="stylesheet" />
+  <style>
+    .btn {
+      background-color: DodgerBlue;
+      border: none;
+      color: white;
+      padding: 12px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    /* Darker background on mouse-over */
+    .btn:hover {
+      background-color: RoyalBlue;
+    }
+    </style>
 </head>
 
 <body class="">
@@ -90,11 +105,6 @@
                 <div id="piechart">
                 </div>
               </div>
-              <div class="card-footer">
-                <div class="stats">
-                  <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
-                </div>
-              </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6">
@@ -103,22 +113,12 @@
                 <div id="barchart">
                 </div>
               </div>
-              <div class="card-footer">
-                <div class="stats">
-                  <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
-                </div>
-              </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="card card-chart">
               <div class="card-body">
                 <div id="columnchart">
-              </div>
-              <div class="card-footer">
-                <div class="stats">
-                  <i class="now-ui-icons ui-2_time-alarm"></i> Last 7 days
-                </div>
               </div>
             </div>
           </div>
@@ -134,15 +134,22 @@
                 <p class="card-title" style="font-size: medium;text-align: center;" id="TotalNum">Total Number Of Vehicles - <b>0</b></p>
               </div>
               <br><br>
-              <div style="margin-left: 7%; margin-bottom: 3.3%;" id="gaugeChart"></div>
+              <div style="margin-left: 7%; margin-bottom: 12.5%;" id="gaugeChart"></div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="card">
               <div class="card-header">
-                <h4 class="card-title"> All Sections Traffic</h4>
+                <div class="row">
+                  <div class="col-md-8">
+                    <h4 class="card-title"> All Sections Traffic</h4>
+                  </div>
+                 <div class="col-md-4">
+                    <button onClick="setViewType()" class="btn" style="text-align: right;"> <i class="fas fa-redo"></i></button>
+                  </div>
+                </div>
               </div>
-              <div style="margin-bottom: 7.3%;" class="card-body">
+              <div class="card-body">
                 <div class="table-responsive">
                   <table class="table" id="statsTable">
                     <thead class=" text-primary">
@@ -162,7 +169,7 @@
                           1
                         </td>
                         <td>
-                          More Details
+                          <button onClick="setViewType(1)" class="btn"> <i class="fas fa-hand-pointer"></i></button>
                         </td>
                         <td class="text-right carNumInSection">
                           0
@@ -173,7 +180,7 @@
                           2
                         </td>
                         <td>
-                          More Details
+                          <button onClick="setViewType(2)" class="btn"> <i class="fas fa-hand-pointer"></i></button>
                         </td>
                         <td class="text-right carNumInSection">
                           0
@@ -184,7 +191,7 @@
                           3
                         </td>
                         <td>
-                          More Details
+                          <button onClick="setViewType(3)" class="btn"> <i class="fas fa-hand-pointer"></i></button>
                         </td>
                         <td class="text-right carNumInSection">
                           0
@@ -195,7 +202,7 @@
                           4
                         </td>
                         <td>
-                          More Details
+                          <button onClick="setViewType(4)" class="btn"> <i class="fas fa-hand-pointer"></i></button>
                         </td>
                         <td class="text-right carNumInSection">
                           0
@@ -206,7 +213,7 @@
                           5
                         </td>
                         <td>
-                          More Details
+                          <button onClick="setViewType(5)" class="btn"> <i class="fas fa-hand-pointer"></i></button>
                         </td>
                         <td class="text-right carNumInSection">
                           0

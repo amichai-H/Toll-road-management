@@ -18,6 +18,30 @@ let initCarTypeMat =
   ['Car', 0],
 ];
 
+  
+let initColorMat =      
+[
+  ['Color', 'Blue', 'Red', 'Orange', 'Green', 'Purple'],
+  ['1', 0, 0, 0, 0, 0],
+  ['2', 0, 0, 0, 0, 0],
+  ['3', 0, 0, 0, 0, 0],
+  ['4', 0, 0, 0, 0, 0],
+  ['5', 0, 0, 0, 0, 0]
+];
+
+let initColorArray =      
+[
+  ['Color', 'Blue', 'Red', 'Orange', 'Green', 'Purple'],
+  ['?', 0, 0, 0, 0, 0]
+];
+    
+
+const checkIfMatrix = array => 
+{
+  if(array[0].length > 0)
+    return true;
+  return false;
+}
 
 const gaugeChart = (NumOfVehiclesList, totalNumOfVehicles) =>
 {
@@ -36,7 +60,7 @@ const gaugeChart = (NumOfVehiclesList, totalNumOfVehicles) =>
         ]);
 
         let options = {
-          width: 880, height: 350,
+          width: 880, height: 353,
           redFrom: 80, redTo: 100,
           yellowFrom:50, yellowTo: 80,
           greenFrom:0, greenTo:50,
@@ -89,24 +113,36 @@ const pieChart = (carTypeArray, where) =>
 
 // this function will create a column chart of a given matrix that contain number of vehicle in sections sorted by color
 // where paramter is a string the represnt where the info are from i.e section 1 or 2 or in the all road
-const columnChart = SectionsColorMatrix =>
+const columnChart = (SectionsColor, sectionNum) =>
 {
     // Load google charts
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart(){
-          // Draw the chart and set the chart values
-    let data = google.visualization.arrayToDataTable(SectionsColorMatrix);
 
-    /*
-      [
-        ['Color', 'Blue', 'Red', 'Orange', 'Green', 'Purple'],
-        ['1', 10, 24, 20, 32,2],
-        ['2', 16, 22, 23, 30,3],
-        ['3', 28, 19, 29, 30, 4]
-      ]
-    */
+    let data = null;
+
+    // Draw the chart and set the chart values
+    if(checkIfMatrix(SectionsColor))
+    {
+      // i start for 1 because ColorMat already init 0 row
+      for(let i = 0; i < SectionsColor.length; i++)
+        for(let j = 0; j < SectionsColor[0].length; j++)
+          initColorMat[i + 1][j + 1] = SectionsColor[i][j];
+
+      data = google.visualization.arrayToDataTable(initColorMat);
+    }
+    else
+    {
+      initColorArray[1][0] = sectionNum + "";
+
+      for(let i = 0; i < SectionsColor.length; i++)
+        initColorArray[1][i + 1] = SectionsColor[i];  
+
+      data = google.visualization.arrayToDataTable(initColorArray);
+    }
+
       let options = {
         width: 460,
         height: 270,
@@ -132,35 +168,35 @@ const barChart = (eventArray, where) =>
 {
 
 // Load google charts
-      google.charts.load('current', {'packages':['bar']});
+
+      google.charts.load('current', {packages: ['corechart', 'bar']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
 
-          for(let i = 0; i < eventArray.length; i++)
-          {
-            // eventArray is based 0, and initEventMat is based 1.
-            // get the second cell in the inner array of initEventMat
-            initEventMat[i+1][1] = eventArray[i];
-          }
-          let data = new google.visualization.arrayToDataTable(initEventMat);
+        for(let i = 0; i < eventArray.length; i++)
+        {
+          // eventArray is based 0, and initEventMat is based 1.
+          // get the second cell in the inner array of initEventMat
+          initEventMat[i + 1][1] = eventArray[i];
+        }
+        let data = new google.visualization.arrayToDataTable(initEventMat);
 
-          let options = {
-            title: 'Event occurrences',
-            width: 460,
-            height: 270,
-            legend: { position: 'none' },
-            chart: { title: 'Event Ocurrences ' + where,
-                    subtitle: 'Occurrences by percentage' },
-            bars: 'horizontal', // Required for Material Bar Charts.
-            axes: {
-              x: {
-                0: { side: 'top', label: 'Percentage'} // Top x-axis.
+            var options = {
+              height: 270,
+              title: 'Event Ocurrences ' + where,
+              chartArea: {width: '50%'},
+              hAxis: {
+                title: 'Events Number',
+                minValue: 0
+              },
+              vAxis: {
+                title: 'Events Type'
               }
-            },
-            bar: { groupWidth: "80%" }
-          };
-          let chart = new google.charts.Bar(document.getElementById('barchart'));
-          chart.draw(data, options);
-      };
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('barchart'));
+
+            chart.draw(data, options);
+          }
 };

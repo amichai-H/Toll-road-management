@@ -9,7 +9,7 @@ const kafkaConsumer = require('./models/kafkaConsumer');
 
 const app = express();
 const server = http.createServer(app);
-const { Server } = require("socket.io");
+const { Server } = require('socket.io');
 const io = new Server(server);
 
 app.set('view engine', 'ejs');
@@ -41,35 +41,69 @@ io.on('connection', socket => {
         //console.log(JSON.stringify(reply));
 
         redis.storeData(reply)
-        .then(() => 
-        {
-          redis.numOfVehicles()
-          .then(replies => socket.emit('UpdateStats', replies))
-          .catch(err => console.log(err));
-
-          redis.occurrenceOfField('carType', 3) // 3 possible types
-          .then(reply => socket.emit('UpdatePieChart', reply, "In Roads"))
-          .catch(err => console.log(err));  
-
-          redis.occurrenceOfField('event', 4) // 4 possible types
-          .then(reply => socket.emit('UpdateBarChart', reply, 'In Roads'))
-          .catch(err => console.log(err)); 
-
-          redis.whatIsTheDay()
-          .then(reply => socket.emit('UpdateDay', reply))
-          .catch(err => console.log(err)); 
-
-          redis.IsSpecialDay()
-          .then(reply => socket.emit('UpdateSpecialDay', reply))
-          .catch(err => console.log(err)); 
-
-        })
         .catch(err => console.log(err));
     })
+
+    socket.on('AllSectionStats', () => {
+      AllSectionStats(socket);
+    });
+
+    socket.on('SectionStat', sectionNum => {
+      SectionStats(socket, sectionNum);
+    });
+
+    socket.on('TrafficInfo', () => {
+      TrafficInfo(socket);
+    });
   });
 
-server.listen(3003, err => 
+const AllSectionStats = socket => 
+{
+    redis.occurrenceOfField('carType', 3) // 3 possible types
+    .then(reply => socket.emit('UpdatePieChart', reply, "In All Sections"))
+    .catch(err => console.log(err));  
+
+    redis.occurrenceOfField('event', 4) // 4 possible typesTrafficInfo
+    .then(reply => socket.emit('UpdateBarChart', reply, 'In All Sections'))
+    .catch(err => console.log(err));
+
+    redis.occurrenceOfColors(5) // 5 possible colors
+    .then(reply => socket.emit('UpdateColumnChart', reply))
+    .catch(err => console.log(err)); 
+}
+
+const SectionStats = (socket, sectionNum) => 
+{
+    redis.occurrenceOfFieldBySection(sectionNum, redis.multiValueCallback, 'carType', 3)// 3 possible types
+    .then(reply => socket.emit('UpdatePieChart', reply, 'In Section ' + sectionNum))
+    .catch(err => console.log(err));  
+
+    redis.occurrenceOfFieldBySection(sectionNum, redis.multiValueCallback, 'event', 4)// 4 possible events
+    .then(reply => socket.emit('UpdateBarChart', reply, 'In Section ' + sectionNum))
+    .catch(err => console.log(err));
+
+    redis.occurrenceOfFieldBySection(sectionNum, redis.multiValueCallback, 'color', 5) // 5 possible colors
+    .then(reply => socket.emit('UpdateColumnChart', reply, sectionNum))
+    .catch(err => console.log(err)); 
+}
+
+const TrafficInfo = socket => 
+{
+  redis.numOfVehicles()
+  .then(replies => socket.emit('UpdateStats', replies))
+  .catch(err => console.log(err));
+
+  redis.whatIsTheDay()
+  .then(reply => socket.emit('UpdateDay', reply))
+  .catch(err => console.log(err)); 
+
+  redis.IsSpecialDay()
+  .then(reply => socket.emit('UpdateSpecialDay', reply))
+  .catch(err => console.log(err)); 
+}
+
+server.listen(3000, err => 
   {
-    if (err) console.log("Error in server setup")
-    console.log("Server listening on Port");
+    if (err) console.log('Error in server setup')
+    console.log('Server listening on Port');
   })

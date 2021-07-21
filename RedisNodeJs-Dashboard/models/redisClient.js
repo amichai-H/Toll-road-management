@@ -1,8 +1,12 @@
 const redis = require('redis');
 const client = redis.createClient();
 
+let NotInRoadVehicles = [];
+
 client.on('connect', () => {
     console.log('Redis client connected');
+    //clearDB();
+    setInterval(DeleteExitedVehicles, 10000); // every 10 second delete exited vehicles
 });
 
 client.on("error", (error) => {
@@ -15,6 +19,9 @@ const storeData = messegeJson =>
     return new Promise((resolve, reject) => {
         const sectionNum = messegeJson.roadParts;
         const vehicleID = messegeJson.id;
+
+        if(messegeJson.event == 3) // exit from road
+            NotInRoadVehicles.push(notifySections(vehicleID));
 
         notifySections(vehicleID)
         .then(() =>
@@ -39,7 +46,6 @@ const fetchSectionData = sectionNum =>
         {
             if (err) reject(err);
             resolve(reply); // json
-            //console.log("get " + JSON.stringify(reply)) // should be a list
         });
     });
 };
@@ -47,6 +53,7 @@ const fetchSectionData = sectionNum =>
 // this function will delete the given vehicle id from each section, this function will call before we store the updated section of the vehicle
 const notifySections = vehicleID => {
     return new Promise((resolve, reject) => {
+
         client.multi([
             ["hdel", ["Section1", vehicleID]],
             ["hdel", ["Section2", vehicleID]],
@@ -126,20 +133,21 @@ const occurrenceOfFieldBySection = (sectionNum, callback, field, len)=>
 */
 const multiValueCallback = (resolve, reply, field, len) => 
 {
-    let typesNum = new Array(len).fill(0);
+    let fieldNum = new Array(len).fill(0);
      
     reply.forEach(dataObj => 
     {
-        let typeIndex = JSON.parse(dataObj)[field];
-        typesNum[typeIndex - 1]++;
+        let fieldIndex = JSON.parse(dataObj)[field];
+        fieldNum[fieldIndex - 1]++;
     });
-    resolve(typesNum);
+    resolve(fieldNum);
 }
 
 
 const singleValueCallback = (resolve, reply, field) => 
 {        
-    resolve(JSON.parse(reply[0])[field]);
+    if(reply.length > 0)
+        resolve(JSON.parse(reply[0])[field]);
 }
 
 /**  
@@ -162,8 +170,6 @@ const occurrenceOfColors = len =>
                             occurrenceOfFieldBySection(5, multiValueCallback, 'color', len),
                         ]);
 
-                        console.log(result);
-
                         return result;
                     }
                     )();
@@ -182,7 +188,6 @@ const occurrenceOfColors = len =>
 */
 const occurrenceOfField = (field, len) => 
 {
-
     return new Promise((resolve, reject) => {           
 
         // waiting for all promises resolve
@@ -248,14 +253,30 @@ const whatIsTheDay = () =>
      });
  }
 
+ /**
+ * return boolean if it is special day
+ */
+  const DeleteExitedVehicles = () =>
+  {
+    console.log("size of" + NotInRoadVehicles.length);
+    Promise.all(NotInRoadVehicles)
+        .then(() => NotInRoadVehicles.length = 0)
+        .catch((e) => console.log(err));
+            // handle errors here
+  }
+ 
 module.exports = {
     storeData: storeData,
     fetchSectionData: fetchSectionData,
     numOfVehicles: numOfVehicles,
     numOfVehiclesBySection: numOfVehiclesBySection,
     occurrenceOfField: occurrenceOfField,
+    occurrenceOfColors: occurrenceOfColors,
     whatIsTheDay: whatIsTheDay,
     IsSpecialDay: IsSpecialDay,
+    occurrenceOfFieldBySection: occurrenceOfFieldBySection,
+    multiValueCallback: multiValueCallback,
+   
   };
 
 
