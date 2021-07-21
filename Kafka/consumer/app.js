@@ -1,4 +1,4 @@
-import Kafka from 'node-rdkafka';
+const Kafka = require('node-rdkafka');
 
 var consumer = new Kafka.KafkaConsumer({
   'group.id': 'kafka',
@@ -9,8 +9,11 @@ consumer.connect();
 
 consumer.on('ready', () => {
   console.log('consumer ready..')
-  consumer.subscribe(['test']);
+  consumer.subscribe(['Toll-road']);
   consumer.consume();
 }).on('data', function(data) {
-  console.log(`received message: ${eventType.fromBuffer(data.value)}`);
+  var msg = JSON.parse(data.value);
+  console.log(`received message: ${JSON.stringify(msg)}`);
 });
+
+// using https://docs.confluent.io/platform/current/quickstart/cos-docker-quickstart.html for connecting kafka with docker

@@ -1,1 +1,0 @@
-// using https://docs.confluent.io/platform/current/quickstart/cos-docker-quickstart.html for connecting kafka with docker

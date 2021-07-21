@@ -1,4 +1,4 @@
-import Kafka from 'node-rdkafka';
+const Kafka = require('node-rdkafka');
 
 const stream = Kafka.Producer.createWriteStream({
   'metadata.broker.list': 'localhost:9092'
@@ -12,7 +12,10 @@ stream.on('error', (err) => {
 });
 
 function queueMessage() {
-  const success = stream.write(Buffer.from('hi'));     
+  const obj = {test: "hi", ben: "ben"}; 
+
+  const success = stream.write(Buffer.from(JSON.stringify(obj)));  
+  //const success = stream.write();        
   if (success) {
     console.log("message queued");
   } else {
