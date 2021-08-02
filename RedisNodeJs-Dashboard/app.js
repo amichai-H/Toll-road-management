@@ -30,10 +30,10 @@ io.on('connection', socket => {
     // reciving data in json format
     kafkaConsumer.fetchData((err, reply) => 
     {
-        if(err) console.log(err);
-        redis.storeData(reply)
-        .then(reply => console.log("redis received data"))
-        .catch(err => console.log(err));
+      if(err) console.log(err);
+      redis.storeData(reply)
+      .then(reply => console.log("redis received data"))
+      .catch(err => console.log(err));
     })
 
     socket.on('AllSectionStats', () => {

@@ -22,6 +22,7 @@ const fetchData = callback =>
 
       }).on('event.error', err => 
       {
+        console.log(err);
         callback(err);
       });
 }

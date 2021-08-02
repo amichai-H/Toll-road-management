@@ -21,7 +21,7 @@ class vHandler:
             self.onRoad.put(i)
 
     def iteration(self):
-        sleep(0.7)
+        sleep(0.15)
         self.time.addTime(random.randint(2, 5))
         if random.randint(1,5) == 5:
             cars = vehicleOB.generateVehicle(3)

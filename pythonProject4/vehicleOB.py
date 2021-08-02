@@ -31,7 +31,7 @@ class Vehicle:
         self.onRoad = False
         self.vehicleType = vehicleType
         self.roadParts = 0
-        self.id = id
+        self.id = random.randint(0,2**32) 
         self.inAt = 0
         self.outAt = 0
         ls = random.randint(1, 2)
