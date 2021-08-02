@@ -5,9 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-producer": "node ./Kafka/producer/app.js",
-    "start-consumer": "node ./Kafka/consumer/app.js",
-    "start-redis-dashboard": "node ./RedisNodeJs-Dashboard/app.js"
+    "start-redis-dashboard": "node ./RedisNodeJs-Dashboard/app.js"  
   },
   "repository": {
     "type": "git",

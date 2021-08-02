@@ -1,8 +1,12 @@
+import random
+
+
 class dayTime:
     def __init__(self, h, m, d):
         self.hours = h % 24
         self.minutes = m % 60
         self.day = d % 8 + 1
+        self.spai = bool(random.getrandbits(1))
 
     def addTime(self, m):
         if (m + self.minutes) >= 60:
@@ -10,6 +14,7 @@ class dayTime:
         self.minutes = (self.minutes + m) % 60
         if self.hours >= 24:
             self.day = self.day + 1
+            self.spai = bool(random.getrandbits(1))
         self.hours = self.hours % 24
         if self.day > 7:
             self.day = 1
@@ -27,3 +32,6 @@ class dayTime:
 
     def getDay(self):
         return self.day
+
+    def getSpai(self):
+        return self.spai

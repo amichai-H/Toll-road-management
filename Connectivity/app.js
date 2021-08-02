@@ -4,6 +4,8 @@ const connectDB = require('./DB/connection')
 const mongoose = require("mongoose")
 const ejs = require("ejs");
 const build_data = require('./algo/algo')
+const kafkaConsumer = require('./models/kafkaConsumer');
+
 
 
 connectDB()
@@ -46,8 +48,12 @@ app.post('/train',(req,res) =>{
   res.redirect("/");
 })
 
-
-
+  // reciving data in json format
+  kafkaConsumer.fetchData((err, reply) => 
+  {
+      if(err) console.log(err);
+      new Road(reply).save();
+  })
 
 
 app.listen(PORT, () => {
