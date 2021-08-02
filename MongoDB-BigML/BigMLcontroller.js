@@ -34,15 +34,17 @@ function train() {
         }
     });
 }
-function predict() {
+function predict(reply ,callback) {
     const localModel = new bigml.LocalModel(modelGlobal);
-    localModel.predict({"car": 2, "color": "BLACK"},
+    localModel.predict({"in": reply.roadParts, "car": reply.carType,"day": reply.day,"Special":reply.Special,"color":reply.color},
         function (error, prediction) {
             // let pred = JSON.parse(prediction);
             // console.log("here: "+ pred)
-            console.log("the prediction is: " + prediction.prediction)
+            callback(error, prediction.prediction);
         });
 }
 
-
-module.exports = "BIGML_CONTROLLER"
+module.exports = {
+    predict: predict,
+    train: train, 
+  };

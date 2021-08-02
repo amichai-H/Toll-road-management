@@ -4,7 +4,7 @@ import proccesor
 import toKafka
 import json
 
-# mykafka = toKafka.kafka()
+mykafka = toKafka.kafka()
 
 event = [1, 2, 3, 4]  # ["enter to road", "enter to section", "exit from road", "exit from section"]
 
@@ -142,7 +142,7 @@ class Vehicle:
 
     def send(self, newEvent):
         # mypros.addData(newEvent)
-        # mykafka.sendMSG(0,newEvent)
+        mykafka.sendMSG(newEvent)
         json_object = json.dumps(newEvent)
         print(json_object)
         #print(str(newEvent))  # send to server

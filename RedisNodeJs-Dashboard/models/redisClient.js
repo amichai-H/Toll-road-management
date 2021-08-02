@@ -215,7 +215,6 @@ const occurrenceOfField = (field, len) =>
     });
 }
 
-
 // clear the DB from redis client
 const clearDB = () => 
 {
@@ -258,7 +257,6 @@ const whatIsTheDay = () =>
  */
   const DeleteExitedVehicles = () =>
   {
-    console.log("size of" + NotInRoadVehicles.length);
     Promise.all(NotInRoadVehicles)
         .then(() => NotInRoadVehicles.length = 0)
         .catch((e) => console.log(err));

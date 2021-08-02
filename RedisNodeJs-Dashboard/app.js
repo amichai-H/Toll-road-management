@@ -38,9 +38,8 @@ io.on('connection', socket => {
     kafkaConsumer.fetchData((err, reply) => 
     {
         if(err) console.log(err);
-        //console.log(JSON.stringify(reply));
-
         redis.storeData(reply)
+        .then(reply => console.log("redis recive data"))
         .catch(err => console.log(err));
     })
 

@@ -10,6 +10,7 @@
   "author": "gal",
   "license": "ISC",
   "dependencies": {
+    "bigml": "^1.22.2",
     "body-parser": "^1.19.0",
     "csv-parser": "^3.0.0",
     "csv-stringify": "^5.6.2",

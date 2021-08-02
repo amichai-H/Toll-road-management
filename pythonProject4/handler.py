@@ -21,7 +21,7 @@ class vHandler:
             self.onRoad.put(i)
 
     def iteration(self):
-        sleep(3)
+        sleep(0.7)
         self.time.addTime(random.randint(2, 5))
         if not self.onRoad.empty():
             temp = self.onRoad.get()
@@ -37,6 +37,6 @@ class vHandler:
         while True:
             if self.onRoad.empty():
                 print("no cars")
-                self.addCars(100)
-                sleep(3)
+                self.addCars(20)
+                sleep(1)
             self.iteration()
