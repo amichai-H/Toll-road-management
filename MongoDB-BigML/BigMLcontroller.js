@@ -6,7 +6,7 @@ const readline = require('readline').createInterface({
 });
 let modelGlobal=""
 
-function train() {
+function train(fun) {
     source.create('./events.csv', function (error, sourceInfo) {
         if (!error && sourceInfo) {
             const dataset = new bigml.Dataset();
@@ -25,6 +25,7 @@ function train() {
                                 function (error, prediction) {
                                     // let pred = JSON.parse(prediction);
                                     // console.log("here: "+ pred)
+                                    fun()
                                     console.log("the prediction is: " + prediction.prediction)
                                 });
                         }

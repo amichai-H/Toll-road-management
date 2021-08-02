@@ -5,7 +5,7 @@ let NotInRoadVehicles = [];
 
 client.on('connect', () => {
     console.log('Redis client connected');
-    //clearDB();
+    clearDB();
     setInterval(DeleteExitedVehicles, 10000); // every 10 second delete exited vehicles
 });
 

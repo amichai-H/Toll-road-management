@@ -19,8 +19,7 @@ const train = (req,res) =>{
   
    Road.find({},function(err,users){
     build_data(users);
-    bigMLConnector.train();
-    res.locals.canPredict=true;
+    bigMLConnector.train(res.locals.canPredict);
    });
     res.redirect("/");
 }

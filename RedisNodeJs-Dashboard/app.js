@@ -32,7 +32,7 @@ io.on('connection', socket => {
     {
         if(err) console.log(err);
         redis.storeData(reply)
-        .then(reply => console.log("redis recive data"))
+        .then(reply => console.log("redis received data"))
         .catch(err => console.log(err));
     })
 

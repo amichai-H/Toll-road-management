@@ -2,7 +2,7 @@
   "name": "project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-mongo": "node ./app.js"
@@ -20,6 +20,8 @@
     "json-2-csv": "^3.14.1",
     "mongodb": "^4.0.1",
     "mongoose": "^5.13.5",
+    "node-gyp": "^8.1.0",
+    "node-rdkafka": "^2.10.1",
     "stringify": "^5.2.0"
   }
 }

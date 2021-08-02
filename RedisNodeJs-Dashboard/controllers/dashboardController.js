@@ -1,6 +1,8 @@
+const path = require('path');
+
 const renderDashboard = (req, res) => 
 {
-    res.render(path.join(__dirname, 'views/dashboard.ejs'));
+    res.render(path.join(__dirname, '../views/dashboard.ejs'));
 }
 
 const AllSectionStats = (socket, redis) => 

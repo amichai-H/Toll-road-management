@@ -23,6 +23,12 @@ class vHandler:
     def iteration(self):
         sleep(0.7)
         self.time.addTime(random.randint(2, 5))
+        if random.randint(1,5) == 5:
+            cars = vehicleOB.generateVehicle(3)
+            for i in cars:
+                self.time.addTime(random.randint(2, 5))
+                i.getOnRoad(self.time.TimeToString(), self.time.getDay(), self.time.getSpai())
+                self.onRoad.put(i)
         if not self.onRoad.empty():
             temp = self.onRoad.get()
             stayOn = temp.action(self.time.TimeToString(), self.time.getDay(), self.time.getSpai())

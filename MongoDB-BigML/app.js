@@ -9,8 +9,7 @@ const confusionMatrixControllers = require("./controllers/confusionMatrixControl
 const Road = require('./models/RoadSchema');
 
 table_to_html = bigMLTable();
-let canPredict = new Boolean(false);
-
+let canPredict = false;
 connectDB()
 const app = express()
 app.set('view engine', 'ejs');
@@ -23,17 +22,25 @@ app.get('/', confusionMatrixControllers.UpdateMatrix);
 
 app.post('/', confusionMatrixControllers.Postpredict);
 
+function finishPredict(){
+  canPredict = true;
+}
+
 app.post('/train',(req, res, next) => 
 { 
-    res.locals.canPredict = canPredict;
-    next()
+    res.locals.canPredict = finishPredict;
+    next();
+    
 }
 ,confusionMatrixControllers.train);
 
   // reciving data in json format
   kafkaConsumer.fetchData((err, reply) => 
   {
+    if(err) console.log(err);
+
     if(canPredict && reply.event === 1){ // enter section
+    
       bigMLConnector.predict(reply, (err, predictOut) => 
       {
         if(err) console.log(err);
@@ -47,8 +54,6 @@ app.post('/train',(req, res, next) =>
         bigMLTable()["section_" + reply.roadParts][predictValue-1]++;
       }
     }
-
-      if(err) console.log(err);
       new Road(reply).save();
   })
 
