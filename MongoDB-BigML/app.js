@@ -20,7 +20,7 @@ const PORT = 4000
 app.get('/', confusionMatrixControllers.UpdateMatrix);
 
 
-app.post('/', confusionMatrixControllers.Postpredict);
+app.post('/', confusionMatrixControllers.UpdateMatrix);
 
 function finishPredict(){
   canPredict = true;
@@ -52,6 +52,7 @@ app.post('/train',(req, res, next) =>
       if(predictValue != undefined && predictValue != null)
       {
         bigMLTable()["section_" + reply.roadParts][predictValue-1]++;
+
       }
     }
       new Road(reply).save();

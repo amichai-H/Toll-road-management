@@ -4,14 +4,8 @@ const bigMLConnector = require('../BigMLcontroller');
 
 const UpdateMatrix = (req,res) => 
 {
-    res.render("predictTable",{table_to_html : table_to_html})
-}
-
-const Postpredict = (req,res) =>
-{
     table_to_html = bigMLTable();
-    console.log(bigMLTable());
-    res.render("predictTable",{table_to_html : table_to_html});
+    res.render("predictTable",{table_to_html : table_to_html})
 }
 
 const train = (req,res) =>{
@@ -26,6 +20,5 @@ const train = (req,res) =>{
 
 module.exports = {
     train: train,
-    Postpredict: Postpredict,
     UpdateMatrix: UpdateMatrix
   };

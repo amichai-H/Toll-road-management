@@ -26,7 +26,6 @@ const fetchData = callback =>
       });
 }
 
-
 module.exports = {
     fetchData: fetchData,
   };
