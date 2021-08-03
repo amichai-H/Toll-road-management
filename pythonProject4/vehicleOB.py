@@ -4,19 +4,23 @@ import proccesor
 import toKafka
 import json
 
+# connection to kafka
 mykafka = toKafka.kafka()
 
 event = [1, 2, 3, 4]  # ["enter to road", "enter to section", "exit from road", "exit from section"]
 
 id = 0
+# object for testing only
 mypros = proccesor.pros()
 
 
+# enum for up and down on the road
 class Direction(Enum):
     UP = 1
     DOWN = 2
 
 
+# enum for colors
 class Color(Enum):
     BLUE = 1
     RED = 2
@@ -25,13 +29,14 @@ class Color(Enum):
     PURPLE = 5
 
 
+# class for control of every vehicle on the road
 class Vehicle:
     def __init__(self, vehicleType):
         global id
         self.onRoad = False
         self.vehicleType = vehicleType
         self.roadParts = 0
-        self.id = random.randint(0,2**32) 
+        self.id = random.randint(0, 2 ** 32)
         self.inAt = 0
         self.outAt = 0
         ls = random.randint(1, 2)
@@ -43,6 +48,7 @@ class Vehicle:
         self.color = random.choice(list(Color))
         id += 1
 
+    # Creates a json based on the data
     def gnerateData(self, eventT, day, time, specialDay):
         return {"event": eventT,
                 "roadParts": self.roadParts,
@@ -53,6 +59,10 @@ class Vehicle:
                 "color": self.color.value,
                 "id": self.id}
 
+    # There are 3 modes
+    # 1. The vehicle gets on the road.
+    # 2. The vehicle remains on the road.
+    # 3. The vehicle gets off the road.
     def stayOnRoad(self, time, day, specialDay):
         newEvent = self.gnerateData(event[3], day, time, specialDay)
         self.send(newEvent)
@@ -116,6 +126,7 @@ class Vehicle:
                 self.outAt = 2
                 return
 
+    # This function controls that everything happens properly
     def geberateEvent(self, number, time, day, specialDay):
         if number == 1:
             self.stayOnRoad(time, day, specialDay)
@@ -128,9 +139,10 @@ class Vehicle:
             # self.exitFromRoad(time, day, specialDay)
             return
 
+    # This function ensures that the handler knows whether the car is on the road or not
     def action(self, time, day, specialDay):
         if self.outAt == 0:
-            print("EEEEEEEE!!!!")
+            print("EEEEEEEE!!!!")  # for debugging information
         if not self.onRoad:
             return False
         if self.outAt == self.roadParts:
@@ -140,17 +152,20 @@ class Vehicle:
             self.stayOnRoad(time, day, specialDay)
             return True
 
+    # This function is responsible for sending the information
     def send(self, newEvent):
         # mypros.addData(newEvent)
         mykafka.sendMSG(newEvent)
         json_object = json.dumps(newEvent)
         print(json_object)
-        #print(str(newEvent))  # send to server
+        # print(str(newEvent))  # send to server
 
+    # This function was used to fix a bug
     def fix(self, time, day, specialDay):
         self.exitFromRoad(time, day, specialDay)
 
 
+# This function creates an amount of x vehicles and returns their array
 def generateVehicle(x):
     vehicleArray = []
     for i in range(x):
@@ -165,6 +180,7 @@ def generateVehicle(x):
     return vehicleArray
 
 
+# This function guerrilla number from 1 to 5 with an unequal probability
 def randomINT5(v):
     if v == 3 and random.randint(0, 1) == 1:
         return 4

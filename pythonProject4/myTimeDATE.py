@@ -1,6 +1,7 @@
 import random
 
 
+# date class to control
 class dayTime:
     def __init__(self, h, m, d):
         self.hours = h % 24

@@ -1,6 +1,6 @@
 import random
 import datetime
-
+# old class for inspiration - not used 'big idea'
 event = ["enter to road", "enter to section", "exit from road", "exit from section"]
 roadParts = [1, 2, 3, 4, 5]
 carType = [1, 2, 3]
